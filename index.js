@@ -43,7 +43,7 @@ app.get("/facebook/callback", async (req, res) => {
 // Configure Passport to use session
 app.use(
   session({
-    secret: "f0b9bad4eb31173923e05f2d09ece117",
+    secret: "",
     resave: true,
     saveUninitialized: true,
   })
@@ -55,8 +55,8 @@ let access_token = "";
 passport.use(
   new FacebookStrategy(
     {
-      clientID: "720243843501638",
-      clientSecret: "f0b9bad4eb31173923e05f2d09ece117",
+      clientID: "",
+      clientSecret: "",
       callbackURL: "http://localhost:3002/auth/facebook/callback",
       profileFields: ["id", "displayName", "photos", "email"],
     },
@@ -132,7 +132,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail", // e.g., 'gmail', 'hotmail', etc.
   auth: {
     user: "jasham009@gmail.com", //
-    pass: "vhqv zqwx owwv wcxy",
+    pass: "",
   },
 });
 
