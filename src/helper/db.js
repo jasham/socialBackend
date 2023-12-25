@@ -1,16 +1,30 @@
 const { connect, connection } = require("mongoose");
 
-connect(process.env.MONGODB_URI || "mongodb://localhost:27017/MyApp", {
+
+connect(process.env.MONGODB_URI || "mongodb://localhost:27017/TCP", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
+  // other options if needed
 })
   .then(() => {
-    console.log("db connected");
+    console.log("DB connected");
+    // ... your code after successful connection
   })
   .catch((err) => {
-    console.log(err, "hello 1998");
+    console.error("Error connecting to DB:", err);
+    // Handle the error appropriately
   });
+// connect(process.env.MONGODB_URI || "mongodb://localhost:27017/TCP", {
+//   useNewUrlParser: true,
+//   // useUnifiedTopology: true,
+//   // useCreateIndex: true,
+// })
+//   .then(() => {
+//     console.log("db connected");
+//   })
+//   .catch((err) => {
+//     console.log(err, "hello 1998");
+//   });
 
 const main = (req, res, next) => {
   if (connection.readyState === 0) {

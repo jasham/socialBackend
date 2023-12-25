@@ -6,10 +6,11 @@ const env = require("./env");
 const app = express();
 const dotenv = require("dotenv");
 const bizSdk = require("facebook-nodejs-business-sdk");
-const routes = require("./src/routes");
+const routes = require("./src/routes/");
 
 dotenv.config();
 
+app.use(express.json({ limit: "100mb" }))
 app.use(
   session({
     secret: env[process.env.NODE_ENV].FB_APP_SECRET_ID,
