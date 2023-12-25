@@ -3,10 +3,9 @@ const express = require("express");
 const router = express.Router();
 
 const AuthController = {
-
   async test(req, res) {
     try {
-      // const user = await signup(req.body);
+      const user = await signup(req.body);
       res.status(201).json("api calling");
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -25,8 +24,8 @@ const AuthController = {
 
   async loginController(req, res) {
     try {
-      //const user = await login(req.body);
-      res.status(200).json(true);
+      const user = await login(req.body);
+      res.status(200).json({ token: user.token });
     } catch (error) {
       res.status(401).json({ message: "Invalid email or password" });
     }
