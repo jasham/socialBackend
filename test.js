@@ -64,19 +64,22 @@ passport.use(
       console.log("I am reached here", profile);
       access_token = accessToken;
       // Store user details in session or database as needed
-      return done(null, profile);
+      return done(null, { profile, access_token });
     }
   )
 );
 
 // Serialize and deserialize user
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+// passport.serializeUser((userData, done) => {
+//   console.log("I am reached here 1", userData);
+//   done(null, userData);
+// });
 
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
+// passport.deserializeUser((obj, done) => {
+//   console.log("I am reached here 2", obj);
+
+//   done(null, obj);
+// });
 
 // Routes
 app.get("/", (req, res) => {

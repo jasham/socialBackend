@@ -5,7 +5,7 @@ const router = express.Router();
 const CredentialController = {
   async test(req, res) {
     try {
-      console.log("req", req.user);
+      console.log("req", req);
       res.status(201).json("api calling");
     } catch (error) {
       res.status(400).json({ message: error.message });
