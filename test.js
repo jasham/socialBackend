@@ -61,7 +61,7 @@ passport.use(
       profileFields: ["id", "displayName", "photos", "email"],
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log("I am reached here", accessToken);
+      console.log("I am reached here", profile);
       access_token = accessToken;
       // Store user details in session or database as needed
       return done(null, profile);
@@ -98,15 +98,15 @@ app.get(
 app.get("/profile", (req, res) => {
   // if (req.isAuthenticated()) {
   const user = req.user;
+  console.log("user", user)
   // You can make API requests to fetch user's posts using Axios or any HTTP library
   // Example: Fetch user's posts
-  console.log("Teja", access_token);
+
   axios
     .get(
       `https://graph.facebook.com/me/posts?fields=message,id,picture&access_token=${access_token}`
     )
     .then((response) => {
-      console.log("Here is response", response);
       const posts = response.data.data;
       res.json(posts);
       // res.redirect("/sendPermissionEmail");

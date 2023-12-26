@@ -3,9 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 const AuthController = {
+
   async test(req, res) {
     try {
-      const user = await signup(req.body);
+      console.log("req", req)
       res.status(201).json("api calling");
     } catch (error) {
       res.status(400).json({ message: error.message });

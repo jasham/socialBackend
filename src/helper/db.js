@@ -25,4 +25,7 @@ const main = (req, res, next) => {
 module.exports = {
   main,
   user: require("../models/user"),
+  feed: require("../models/feeds"),
+  credential: require("../models/credential"),
+  accountType: require("../models/accountType"),
 };

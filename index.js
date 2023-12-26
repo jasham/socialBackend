@@ -27,11 +27,14 @@ passport.use(
     {
       clientID: env[process.env.NODE_ENV].FB_APP_ID,
       clientSecret: env[process.env.NODE_ENV].FB_APP_SECRET_ID,
-      callbackURL: "http://localhost:3002/auth/facebook/callback",
+      //callbackURL: "http://localhost:3002/auth/facebook/callback",
+      callbackURL: "http://localhost:3002/api/v1/credential/test",
       profileFields: ["id", "displayName", "photos", "email"],
     },
     (accessToken, refreshToken, profile, done) => {
-      access_token = accessToken;
+      console.log("index profile", profile);
+      console.log("index refreshToken", refreshToken);
+      console.log("index accessToken", accessToken);
       // Store user details in session or database as needed
       return done(null, profile);
     }
@@ -46,6 +49,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
+
 app.use(routes);
 
 // Start server
