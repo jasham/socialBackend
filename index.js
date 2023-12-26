@@ -1,16 +1,14 @@
 const express = require("express");
-const passport = require("passport");
-const FacebookStrategy = require("passport-facebook").Strategy;
 const session = require("express-session");
 const env = require("./env");
 const app = express();
 const dotenv = require("dotenv");
-const bizSdk = require("facebook-nodejs-business-sdk");
 const routes = require("./src/routes/");
+const { fbInitialize, fb } = require("./src/services/socialConnect/fb");
 
 dotenv.config();
 
-app.use(express.json({ limit: "100mb" }))
+app.use(express.json({ limit: "100mb" }));
 app.use(
   session({
     secret: env[process.env.NODE_ENV].FB_APP_SECRET_ID,
@@ -18,40 +16,21 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+const passport = fbInitialize();
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Configure Facebook Strategy
-passport.use(
-  new FacebookStrategy(
-    {
-      clientID: env[process.env.NODE_ENV].FB_APP_ID,
-      clientSecret: env[process.env.NODE_ENV].FB_APP_SECRET_ID,
-      //callbackURL: "http://localhost:3002/auth/facebook/callback",
-      callbackURL: "http://localhost:3002/api/v1/credential/test",
-      profileFields: ["id", "displayName", "photos", "email"],
-    },
-    (accessToken, refreshToken, profile, done) => {
-      console.log("index profile", profile);
-      console.log("index refreshToken", refreshToken);
-      console.log("index accessToken", accessToken);
-      // Store user details in session or database as needed
-      return done(null, profile);
-    }
-  )
-);
-
-// Serialize and deserialize user
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
+const fbIni = fb(passport);
 
 app.use(routes);
-
+app.get(
+  "/auth/facebook/callback",
+  fbIni.authenticate("facebook", {
+    successRedirect: "/api/v1/credential/test",
+    failureRedirect: "/",
+  })
+);
 // Start server
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
