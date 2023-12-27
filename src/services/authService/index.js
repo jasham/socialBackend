@@ -1,5 +1,5 @@
 const con = require("../../helper/db");
-const { generateToken } = require("../../helper/token");
+const { generateToken, decodeToken } = require("../../helper/token");
 
 const AuthService = {
   async signup(userData) {
@@ -37,6 +37,11 @@ const AuthService = {
     // If the email and password match, return the authenticated user
     const token = generateToken(user._id);
     return { token };
+  },
+
+  async decode(token) {
+    const decode = decodeToken(token.token);
+    return { decode };
   },
 };
 

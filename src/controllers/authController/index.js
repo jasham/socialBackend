@@ -1,4 +1,4 @@
-const { signup, login } = require("../../services/authService");
+const { signup, login, decode } = require("../../services/authService");
 const express = require("express");
 const router = express.Router();
 
@@ -6,8 +6,8 @@ const AuthController = {
 
   async test(req, res) {
     try {
-      console.log("req", req)
-      res.status(201).json("api calling");
+      const payload = await decode(req.body)
+      res.status(201).json(payload);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
@@ -33,7 +33,7 @@ const AuthController = {
   },
 };
 
-router.get("/test", AuthController.test);
+router.post("/test", AuthController.test);
 // Signup route
 router.post("/signup", AuthController.signupController);
 

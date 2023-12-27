@@ -3,9 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 const CredentialController = {
+
   async test(req, res) {
     try {
-      console.log("req", req);
+
       res.status(201).json("api calling");
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -14,7 +15,13 @@ const CredentialController = {
 
   async save(req, res) {
     try {
-      const saveRes = await saveCredential(req.body);
+      //console.log("req", req.user);
+      const user = {
+        accessToken: req.user.accessToken,
+        userId: "65890894d98e4a4e9c79959b"
+      }
+
+      const saveRes = await saveCredential(user);
       res.status(201).json(saveRes);
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -23,6 +30,6 @@ const CredentialController = {
 };
 
 router.get("/test", CredentialController.test);
-router.post("/", CredentialController.save);
+router.get("/", CredentialController.save);
 
 module.exports = router;

@@ -24,10 +24,11 @@ app.use(passport.session());
 const fbIni = fb(passport);
 
 app.use(routes);
+
 app.get(
   "/auth/facebook/callback",
   fbIni.authenticate("facebook", {
-    successRedirect: "/api/v1/credential/test",
+    successRedirect: "/api/v1/credential",
     failureRedirect: "/",
   })
 );
