@@ -5,8 +5,10 @@ const app = express();
 const dotenv = require("dotenv");
 const routes = require("./src/routes/");
 const { fbInitialize, fb } = require("./src/services/socialConnect/fb");
+const cors = require("cors");
 
 dotenv.config();
+app.use(cors());
 
 app.use(express.json({ limit: "100mb" }));
 app.use(

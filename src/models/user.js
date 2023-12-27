@@ -9,7 +9,7 @@ const User = new Schema({
   gender: { type: String, default: null },
   imageUrl: { type: String, default: null },
   credentialId: { type: Schema.Types.ObjectId },
-  roled: { type: Number },
+  roleId: { type: Number },
 });
 
 module.exports = model("User", User, "User");

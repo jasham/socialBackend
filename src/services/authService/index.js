@@ -1,5 +1,6 @@
 const con = require("../../helper/db");
 const { generateToken, decodeToken } = require("../../helper/token");
+const nodemailer = require("nodemailer");
 
 const AuthService = {
   async signup(userData) {
@@ -21,7 +22,7 @@ const AuthService = {
       throw new Error("Email and password are required");
     }
     const user = await con.user.findOne({ email });
-
+    console.log("Here is user", user);
     if (!user) {
       throw new Error("User not found");
     }
@@ -36,12 +37,38 @@ const AuthService = {
     console.log("Email and password are", user._id);
     // If the email and password match, return the authenticated user
     const token = generateToken(user._id);
-    return { token };
+    return { token, user };
   },
 
   async decode(token) {
     const decode = decodeToken(token.token);
     return { decode };
+  },
+
+  async userInvitaion(data) {
+    const transporter = nodemailer.createTransport({
+      service: "gmail", // e.g., 'gmail', 'hotmail', etc.
+      auth: {
+        user: "jasham009@gmail.com", //
+        pass: "vhqv zqwx owwv wcxy",
+      },
+    });
+    const confirmationLink = `=http://localhost:3000/signup`;
+    try {
+      // Email content
+      const mailOptions = {
+        from: "jasham009@gmail.com",
+        to: recipientEmail,
+        subject: "Request for Data Access Permission",
+        text: `Dear User,\n\nWe require your permission to access your data in order to provide our services. Please visit the following link to grant access: ${confirmationLink}\n\nThank you,\nYour Company Name`,
+      };
+
+      // Send the email
+      const info = await transporter.sendMail(mailOptions);
+      console.log("Email sent:", info.response);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
   },
 };
 
