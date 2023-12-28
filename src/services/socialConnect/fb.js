@@ -44,7 +44,6 @@ const fb = (fbIni) => {
 };
 
 const fbFeeds = async (userAccessToken) => {
-  console.log("userAccessToken=", userAccessToken);
   checkTokenExpiry(userAccessToken);
   const response = await axios.get(
     `https://graph.facebook.com/me/posts?fields=message,id,picture&access_token=${userAccessToken}`
@@ -74,7 +73,6 @@ const checkTokenExpiry = async (userAccessToken) => {
       const expiresAt = new Date(data.data.expires_at * 1000); // Convert UNIX timestamp to JavaScript Date
       const currentTime = new Date();
       console.log("expiresAt=", expiresAt);
-      console.log("currentTime=", currentTime);
       if (expiresAt > currentTime) {
         const timeRemaining = expiresAt - currentTime;
         console.log(

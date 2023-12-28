@@ -20,8 +20,9 @@ const CredentialController = {
       };
 
       const saveRes = await saveCredential(user);
+      console.log("saveRes=", saveRes)
       res.redirect("http://localhost:3000/feeds");
-      res.status(201).json(saveRes);
+      //res.status(201).json(saveRes);
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
