@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const routes = require("./src/routes/");
 const { fbInitialize, fb } = require("./src/services/socialConnect/fb");
 const cors = require("cors");
+const { default: axios } = require("axios");
 
 dotenv.config();
 app.use(cors());
@@ -27,8 +28,7 @@ const fbIni = fb(passport);
 
 app.use(routes);
 
-app.get(
-  "/auth/facebook/callback",
+app.get("/auth/facebook/callback", () =>
   fbIni.authenticate("facebook", {
     successRedirect: "/api/v1/credential",
     failureRedirect: "/",

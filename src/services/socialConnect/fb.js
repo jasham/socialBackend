@@ -22,10 +22,11 @@ const fb = (fbIni) => {
         profileFields: ["id", "displayName", "photos", "email"],
       },
       (accessToken, refreshToken, profile, done) => {
+        console.log("Here is real data from heaven", profile, accessToken);
         let userObj = {
           accessToken,
-          profile
-        }
+          profile,
+        };
         return done(null, userObj);
       }
     )
@@ -43,10 +44,12 @@ const fb = (fbIni) => {
 };
 
 const fbFeeds = async (userAccessToken) => {
-  console.log("userAccessToken=", userAccessToken)
-  checkTokenExpiry(userAccessToken)
-  const response = await axios.get(`https://graph.facebook.com/me/posts?fields=message,id,picture&access_token=${userAccessToken}`)
-  return response.data.data
+  console.log("userAccessToken=", userAccessToken);
+  checkTokenExpiry(userAccessToken);
+  const response = await axios.get(
+    `https://graph.facebook.com/me/posts?fields=message,id,picture&access_token=${userAccessToken}`
+  );
+  return response.data.data;
   // .then((response) => {
   //   const posts = response.data.data;
   //   console.log("posts=", posts)
@@ -60,7 +63,9 @@ const fbFeeds = async (userAccessToken) => {
 
 const checkTokenExpiry = async (userAccessToken) => {
   try {
-    const response = await axios.get(`https://graph.facebook.com/debug_token?input_token=${userAccessToken}&access_token=${userAccessToken}`);
+    const response = await axios.get(
+      `https://graph.facebook.com/debug_token?input_token=${userAccessToken}&access_token=${userAccessToken}`
+    );
 
     const data = response.data;
 
@@ -68,20 +73,22 @@ const checkTokenExpiry = async (userAccessToken) => {
       // Token is valid, check expiration time
       const expiresAt = new Date(data.data.expires_at * 1000); // Convert UNIX timestamp to JavaScript Date
       const currentTime = new Date();
-      console.log("expiresAt=", expiresAt)
-      console.log("currentTime=", currentTime)
+      console.log("expiresAt=", expiresAt);
+      console.log("currentTime=", currentTime);
       if (expiresAt > currentTime) {
         const timeRemaining = expiresAt - currentTime;
-        console.log(`Token is valid and expires in ${timeRemaining / 1000} seconds.`);
+        console.log(
+          `Token is valid and expires in ${timeRemaining / 1000} seconds.`
+        );
       } else {
-        console.log('Token has expired.');
+        console.log("Token has expired.");
       }
     } else {
-      console.log('Token is not valid.');
+      console.log("Token is not valid.");
     }
   } catch (error) {
-    console.error('Error checking token validity:', error);
+    console.error("Error checking token validity:", error);
   }
-}
+};
 
 module.exports = { fbInitialize, fb, fbFeeds };

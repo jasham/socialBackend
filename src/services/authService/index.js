@@ -46,6 +46,7 @@ const AuthService = {
   },
 
   async userInvitaion(data) {
+    console.log("Here is user email", data);
     const transporter = nodemailer.createTransport({
       service: "gmail", // e.g., 'gmail', 'hotmail', etc.
       auth: {
@@ -58,7 +59,7 @@ const AuthService = {
       // Email content
       const mailOptions = {
         from: "jasham009@gmail.com",
-        to: recipientEmail,
+        to: data.email,
         subject: "Request for Data Access Permission",
         text: `Dear User,\n\nWe require your permission to access your data in order to provide our services. Please visit the following link to grant access: ${confirmationLink}\n\nThank you,\nYour Company Name`,
       };
