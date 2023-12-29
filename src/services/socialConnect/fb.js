@@ -20,9 +20,10 @@ const fb = (fbIni) => {
         clientSecret: env[process.env.NODE_ENV].FB_APP_SECRET_ID,
         callbackURL: "http://localhost:3002/auth/facebook/callback",
         profileFields: ["id", "displayName", "photos", "email"],
+        passReqToCallback: true,
       },
-      (accessToken, refreshToken, profile, done) => {
-        console.log("Here is real data from heaven", profile, accessToken);
+      (req, accessToken, refreshToken, profile, done) => {
+        console.log("Here is real data from heaven", req.session);
         let userObj = {
           accessToken,
           profile,
