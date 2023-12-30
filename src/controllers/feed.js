@@ -1,4 +1,4 @@
-const { saveFeed } = require("../services/feed");
+const { saveFeed, userFeeds } = require("../services/feed");
 const express = require("express");
 const router = express.Router();
 
@@ -24,7 +24,7 @@ const FeedController = {
     },
 };
 
-router.post("/feed", FeedController.save);
-router.get("/feed/:userid", FeedController.list);
+router.post("/", FeedController.save);
+router.get("/:userid", FeedController.list);
 
 module.exports = router;

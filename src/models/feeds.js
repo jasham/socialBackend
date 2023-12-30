@@ -7,7 +7,7 @@ const Feeds = new Schema({
   createdDate: { type: String, default: null },
   updatedDate: { type: String, default: null },
   userId: { type: Schema.Types.ObjectId },
-  accountId: { type: Schema.Types.ObjectId },
+  accountId: { type: Number },
 });
 
 module.exports = model("Feeds", Feeds, "Feeds");

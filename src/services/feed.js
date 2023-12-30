@@ -2,19 +2,32 @@ const con = require("../helper/db");
 
 const FeedService = {
 
-    async saveFeed(feed) {
+    async saveFeed(userFeeds) {
         try {
-            const saveRes = await con.feed.create(feed);
-            return saveRes;
+            console.log("userFeeds=", userFeeds)
+            const feedsToSave = userFeeds.feeds.map(feed => ({
+                socialPlatformPostId: feed.id || null,
+                feedData: feed.message || null,
+                image: feed.picture || null,
+                createdDate: feed.created_time || null,
+                updatedDate: feed.updated_time || null,
+                userId: userFeeds.userId, // Replace 'yourUserId' with the actual user ID
+                accountId: 1, // Replace 'yourAccountId' with the actual account ID
+            }));
+
+            const savedFeeds = await con.feed.insertMany(feedsToSave);
+            return savedFeeds;
         } catch (error) {
-            return null
+            console.error("Error saving feeds:", error);
+            return null;
         }
+
     },
 
-    async userFeeds(feed) {
+    async userFeeds(userId) {
         try {
-            //const saveRes = await con.feed.find();
-            return true;
+            const userFeeds = await con.feed.find({ userId: userId });
+            return userFeeds;
         } catch (error) {
             return null
         }

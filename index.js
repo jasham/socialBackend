@@ -37,41 +37,41 @@ app.use(routes);
 // );
 
 app.get("/auth/facebook", function (req, res, next) {
-  const state = { id: 123 }; // Generate a unique state value
-  console.log("Here is query from 1678", req.query);
+  const state = { userId: req.query.userId }; // Generate a unique state value
+  // console.log("Here is query from 1678", req.query);
   req.session.customData = state; // Store it in the session
 
   passport.authenticate("facebook", {
     scope: ["email", "user_posts", "user_photos", "user_likes"],
   })(req, res, next);
 });
-// app.get("/auth/facebook/callback", (req, res, next) => {
-//   // // Access query parameters here
-//   // console.log("query", req.query);
-//   // // const { queryParam1, queryParam2 } = req.query;
+app.get("/auth/facebook/callback", (req, res, next) => {
+  // Access query parameters here
+  // console.log("query", req.query);
+  // const { queryParam1, queryParam2 } = req.query;
 
-//   // // Perform any operations with query parameters if needed
+  // Perform any operations with query parameters if needed
 
-//   // // Call passport.authenticate with Facebook strategy
-//   // passport.authenticate("facebook", {
-//   //   successRedirect: "/api/v1/credential",
-//   //   failureRedirect: "/",
-//   // })(req, res, next); // Call authenticate middleware
-// });
-app.get(
-  "/auth/facebook/callback",
-  passport.authenticate("facebook", { failureRedirect: "/login" }),
-  function (req, res) {
-    console.log("Here is query", req.query);
-    // Check the state parameter
-    if (req.query.state !== req.session.oauthState) {
-      return res.status(401).send("Invalid state parameter");
-    }
+  // Call passport.authenticate with Facebook strategy
+  passport.authenticate("facebook", {
+    successRedirect: "/api/v1/credential",
+    failureRedirect: "/",
+  })(req, res, next); // Call authenticate middleware
+});
+// app.get(
+//   "/auth/facebook/callback",
+//   passport.authenticate("facebook", { failureRedirect: "/login" }),
+//   function (req, res) {
+//     console.log("Here is query", req.query);
+//     passport.authenticate("facebook", {
+//       successRedirect: "/api/v1/credential",
+//       failureRedirect: "/",
+//     })(req, res, next); // Call authenticate middleware
 
-    // Successful authentication
-    res.redirect("http://localhost:3000/feeds");
-  }
-);
+//     // Successful authentication
+//     res.redirect("http://localhost:3000/feeds");
+//   }
+// );
 // Start server
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

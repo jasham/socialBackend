@@ -13,14 +13,13 @@ const CredentialController = {
 
   async save(req, res) {
     try {
-      console.log("req", req.user);
       const user = {
         accessToken: req.user.accessToken,
-        userId: "65890894d98e4a4e9c79959b",
+        userId: req.user.userCustomData.userId,
       };
 
       const saveRes = await saveCredential(user);
-      console.log("saveRes=", saveRes)
+      //console.log("saveRes=", saveRes)
       res.redirect("http://localhost:3000/feeds");
       //res.status(201).json(saveRes);
     } catch (error) {
